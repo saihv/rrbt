@@ -16,8 +16,8 @@ Code is WIP, with quality improvements and a better README coming soon.
 
 **Other libraries:**
 
-This code borrows a KD-Tree implementation from https://github.com/jtsiomb/kdtree.
+This code borrows a KD-Tree implementation from https://github.com/jtsiomb/kdtree.  
 
-**kdtree is licensed under the BSD License.**
-Author: John Tsiombikas <nuclear@member.fsf.org>
+**kdtree is licensed under the BSD License.**  
+Author: John Tsiombikas <nuclear@member.fsf.org>  
 kdtree is free software. You may use, modify, and redistribute it under the terms of the 3-clause BSD license.
