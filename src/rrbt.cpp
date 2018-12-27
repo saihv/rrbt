@@ -7,6 +7,7 @@
 #include "rrbt_utils.hpp"
 #include "rrbt_params.hpp"
 #include "belief.hpp"
+#include "vision.hpp"
 
 #include <chrono>
 
@@ -18,11 +19,12 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 	RRBT rrbt;
 
-	int nIter = 5000;
+	int nIter = 500;
 
 	rrbt.initTree(nIter);
 
 	Belief belief;
+	Vision vision;
 
 	Sample start, goal, qRand, qNear, qNew;
 	int nearIdx = 0;
@@ -32,9 +34,9 @@ int main(int argc, char *argv[])
 	start.position.z = 0;
 	start.yaw = 0;
 
-	goal.position.x = 100;
-	goal.position.y = 100;
-	goal.position.z = 100;
+	goal.position.x = 20;
+	goal.position.y = 0;
+	goal.position.z = 0;
 	goal.yaw = 0;
 
 	Point beacon;
@@ -48,6 +50,7 @@ int main(int argc, char *argv[])
 	RRBT::vertex_t startNode = rrbt.addNode(start.position, start.yaw, 0, -1, 0, 0, 100, 5*Eigen::MatrixXd::Identity(DIM, DIM));
 	int J = 100;
 
+	vision.readMapData();
 	
 	int j = 1;
 	Sample sample;
@@ -72,7 +75,11 @@ int main(int argc, char *argv[])
 
 		int newIdx = rrbt.Graph.m_vertices.size();
 
-		double newSigma = rrbt.computeDistNodes(qNew.position, beacon);
+		// double newSigma = rrbt.computeDistNodes(qNew.position, beacon);
+
+		double newSigma = vision.evaluateSample(qNew.position, psiNew);
+
+		std::cout << "sigma is " << newSigma << std::endl;
 		double newCost = rrbt.Graph[nearIdx].cost + rrbt.computeDistNodes(qNew.position, qNear.position);
 		RRBT::vertex_t current = rrbt.addNode(qNew.position, psiNew, newIdx, nearIdx, newCost, newSigma, 0, Eigen::MatrixXd::Identity(DIM, DIM));
 
